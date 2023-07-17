@@ -12,7 +12,7 @@
  * Unauthorized copying or distribution of this file is strictly prohibited.
  */
 
-namespace App\Http\Controllers\v1;
+namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;

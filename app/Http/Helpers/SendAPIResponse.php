@@ -7,13 +7,13 @@ use Illuminate\Http\JsonResponse;
 trait SendAPIResponse
 {
 
-    function success($code = 200): JsonResponse
+    function success($data, $message, $code = 200): JsonResponse
     {
-        return response()->json(true, $code);
+        return response()->json(["success" => true, "data" => $data, "message" => $message], $code);
     }
 
-    function error($code = 422): JsonResponse
+    function error($message, $code = 422): JsonResponse
     {
-        return response()->json(false, $code);
+        return response()->json(["success" => false, "message" => $message, "data" => null], $code);
     }
 }

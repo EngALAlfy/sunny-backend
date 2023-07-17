@@ -17,13 +17,13 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username')->unique();
+            $table->string('phone')->unique()->nullable();
             $table->string('password');
-            $table->rememberToken();
-            $table->text('note')->nullable();
             $table->string('photo')->nullable();
-            $table->string('job')->nullable();
-            $table->double('salary')->nullable();
+            $table->string('role')->default("member")->comment("allowed [super_admin,gym_admin,clinic_admin,member]");
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

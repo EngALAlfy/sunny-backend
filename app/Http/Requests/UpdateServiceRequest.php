@@ -36,7 +36,9 @@ class UpdateServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'nullable|max:200|min:3',
+            'desc' => 'nullable|max:500',
+            'doctor_id' => 'nullable|exists:doctors,id',
         ];
     }
 }

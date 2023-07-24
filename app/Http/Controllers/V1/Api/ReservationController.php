@@ -17,6 +17,7 @@ namespace App\Http\Controllers\V1\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use Illuminate\Http\Response;
 
@@ -25,11 +26,13 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $reservations = Reservation::latest()->get();
+        return $this->success(ReservationResource::collection($reservations));
     }
 
 

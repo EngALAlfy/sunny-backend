@@ -18,12 +18,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\ServiceResource;
 use App\Models\Doctor;
-use App\Models\User;
+use App\Models\Service;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -36,7 +34,7 @@ class DoctorController extends Controller
     {
         abort_unless(auth()->user()->isClinicAdmin(), 403);
         $doctors = Doctor::latest()->get();
-        return $this->success(DoctorResource::collection($doctors) , "doctors fetched successfully");
+        return $this->success(DoctorResource::collection($doctors), "doctors fetched successfully");
     }
 
     /**
@@ -60,11 +58,19 @@ class DoctorController extends Controller
      * Display the specified resource.
      *
      * @param Doctor $doctor
-     * @return Response
+     * @return JsonResponse
      */
     public function show(Doctor $doctor)
     {
-        //
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        return $this->success(new DoctorResource($doctor));
+    }
+
+    public function services(Doctor $doctor)
+    {
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $services = Service::where("doctor_id", $doctor->id)->latest()->get();
+        return $this->success(ServiceResource::collection($services));
     }
 
 
@@ -73,21 +79,29 @@ class DoctorController extends Controller
      *
      * @param UpdateDoctorRequest $request
      * @param Doctor $doctor
-     * @return Response
+     * @return JsonResponse
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        //
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $data = $request->validated();
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
+        $doctor->update($data);
+        return $this->success(new DoctorResource($doctor));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Doctor $doctor
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy(Doctor $doctor)
     {
-        //
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $doctor->delete();
+        return $this->success(true);
     }
 }

@@ -12,6 +12,8 @@
  * Unauthorized copying or distribution of this file is strictly prohibited.
  */
 
+use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -29,7 +31,8 @@ class CreateServicesTable extends Migration
             $table->id();
             $table->string("name");
             $table->string("desc" , 600)->nullable();
-            $table->foreignIdFor(\App\Models\User::class , "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
+            $table->foreignIdFor(User::class , "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
+            $table->foreignIdFor(Doctor::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

@@ -36,7 +36,10 @@ class StoreServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:200|min:3',
+            'desc' => 'nullable|max:500',
+            'doctor_id' => 'required|exists:doctors,id',
+            'images' => 'nullable|array',
         ];
     }
 }

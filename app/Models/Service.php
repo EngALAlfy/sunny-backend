@@ -17,6 +17,8 @@ namespace App\Models;
 use App\Traits\HasCreatedByTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
@@ -26,5 +28,11 @@ class Service extends Model
     protected $fillable = [
         'name',
         'desc',
+        'doctor_id',
     ];
+
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(ServiceImage::class);
+    }
 }

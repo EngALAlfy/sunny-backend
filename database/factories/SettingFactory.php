@@ -27,7 +27,7 @@ class SettingFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::where('email', 'admin')->first()->id,
+            'user_id' => User::where('email', 'admin@admin.com')->first()->id,
         ];
     }
 }

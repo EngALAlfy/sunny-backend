@@ -45,6 +45,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         // Section End-point
         Route::get("/profile", [AuthController::class, "profile"]);
         Route::get("/admins/roles", [AdminController::class, "roles"]);
+        Route::get("/doctors/{doctor}/services", [DoctorController::class, "services"]);
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);

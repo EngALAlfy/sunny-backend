@@ -59,7 +59,7 @@ class BackupController extends Controller
      * Show the form for creating a new resource.
      *
      */
-    public function create()
+    public function store()
     {
         // start the backup process
         Artisan::call('backup:run --only-db');
@@ -69,6 +69,7 @@ class BackupController extends Controller
 
         return redirect()->route('backup.index');
     }
+
     /**
      * Display the specified resource.
      *

@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: cache.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 use Illuminate\Support\Str;
 
@@ -105,6 +117,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache'),
 
 ];

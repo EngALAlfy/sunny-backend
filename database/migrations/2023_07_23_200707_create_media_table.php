@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBenifitsTable extends Migration
+class CreateMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateBenifitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('benifits', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
+            $table->string("file" , 400)->index()->unique();
+            $table->unsignedBigInteger("model_id");
+            $table->string("model_type");
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateBenifitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('benifits');
+        Schema::dropIfExists('media');
     }
 }

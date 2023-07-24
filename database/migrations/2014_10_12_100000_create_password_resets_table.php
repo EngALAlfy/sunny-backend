@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: 2014_10_12_100000_create_password_resets_table.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

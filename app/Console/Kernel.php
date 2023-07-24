@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: Kernel.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 namespace App\Console;
 
@@ -10,7 +22,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -25,7 +37,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

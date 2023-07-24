@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: sanctum.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 return [
 
@@ -16,7 +28,7 @@ return [
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
         'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
-        env('APP_URL') ? ','.parse_url(env('APP_URL'), PHP_URL_HOST) : ''
+        env('APP_URL') ? ',' . parse_url(env('APP_URL'), PHP_URL_HOST) : ''
     ))),
 
     /*

@@ -1,7 +1,27 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: api.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
+use App\Http\Controllers\V1\Api\AdminController;
 use App\Http\Controllers\V1\Api\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\V1\Api\BackupController;
+use App\Http\Controllers\V1\Api\BenefitController;
+use App\Http\Controllers\V1\Api\DoctorController;
+use App\Http\Controllers\V1\Api\PaymentTransactionController;
+use App\Http\Controllers\V1\Api\ReservationController;
+use App\Http\Controllers\V1\Api\ServiceController;
+use App\Http\Controllers\V1\Api\SubscriptionController;
+use App\Http\Controllers\V1\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,16 +41,24 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
     Route::post('/auth/login', [AuthController::class, "login"]);
 
     // Section Authed APIs
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
+    Route::as("authed.")->middleware('auth:sanctum')->group(function () {
+        // Section End-point
+        Route::get("/profile", [AuthController::class, "profile"]);
+        // Section resources
+        Route::apiResource("doctors", DoctorController::class);
+        Route::apiResource("services", ServiceController::class);
+        Route::apiResource("reservations", ReservationController::class);
+        Route::apiResource("subscriptions", SubscriptionController::class);
+        Route::apiResource("benefits", BenefitController::class);
+        Route::apiResource("payment-transactions", PaymentTransactionController::class)->only("index", "store");
+        Route::apiResource("backups", BackupController::class)->except("update");
+        Route::apiResource("admins", AdminController::class);
+        Route::apiResource("users", UserController::class)->except(["store"]);
     });
 
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
+    // Section non authed APIs
+    Route::as("non-authed.")->group(function () {
+
     });
 
 

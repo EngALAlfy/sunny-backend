@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: passwords.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 return [
     /*
@@ -13,8 +25,8 @@ return [
     */
 
     'password' => 'يجب أن لا يقل طول كلمة المرور عن ستة أحرف، كما يجب أن تتطابق مع حقل التأكيد',
-    'reset'    => 'تمت إعادة تعيين كلمة المرور',
-    'sent'     => 'تم إرسال تفاصيل استعادة كلمة المرور الخاصة بك إلى بريدك الإلكتروني',
-    'token'    => '.رمز استعادة كلمة المرور الذي أدخلته غير صحيح',
-    'user'     => 'لم يتم العثور على أيّ حسابٍ بهذا العنوان الإلكتروني',
+    'reset' => 'تمت إعادة تعيين كلمة المرور',
+    'sent' => 'تم إرسال تفاصيل استعادة كلمة المرور الخاصة بك إلى بريدك الإلكتروني',
+    'token' => '.رمز استعادة كلمة المرور الذي أدخلته غير صحيح',
+    'user' => 'لم يتم العثور على أيّ حسابٍ بهذا العنوان الإلكتروني',
 ];

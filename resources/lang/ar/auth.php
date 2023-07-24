@@ -1,4 +1,16 @@
 <?php
+/*
+ * Project: sunny-backend
+ * File: auth.php
+ * Author: Islam alalfy
+ * Company: alalfy.com
+ * Website: https://alalfy.com
+ * GitHub: https://github.com/EngALAlfy/sunny-backend
+ *
+ * Copyright (c) 2023 Islam alalfy. All rights reserved.
+ * This code is private and confidential.
+ * Unauthorized copying or distribution of this file is strictly prohibited.
+ */
 
 return [
     /*
@@ -12,7 +24,7 @@ return [
     |
     */
 
-    '403'   => 'لا يسمح لك باجراء هذا الامر',
-    'failed'   => 'بيانات الاعتماد هذه غير متطابقة مع البيانات المسجلة لدينا.',
+    '403' => 'لا يسمح لك باجراء هذا الامر',
+    'failed' => 'بيانات الاعتماد هذه غير متطابقة مع البيانات المسجلة لدينا.',
     'throttle' => 'عدد كبير جدا من محاولات الدخول. يرجى المحاولة مرة أخرى بعد :seconds ثانية.',
 ];

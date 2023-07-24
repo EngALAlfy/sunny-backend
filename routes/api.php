@@ -44,6 +44,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
     Route::as("authed.")->middleware('auth:sanctum')->group(function () {
         // Section End-point
         Route::get("/profile", [AuthController::class, "profile"]);
+        Route::get("/admins/roles", [AdminController::class, "roles"]);
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);

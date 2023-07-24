@@ -14,6 +14,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Helpers\Constants;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -27,8 +28,6 @@ class UserSeeder extends Seeder
     public function run()
     {
         // admin user
-        User::factory()->create(['email' => 'admin']);
-        // demo user
-        User::factory()->create(['email' => 'demo']);
+        User::factory()->create(['email' => 'admin@admin.com' , "role" => Constants::ROLE_SUPER_ADMIN]);
     }
 }

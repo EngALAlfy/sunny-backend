@@ -36,7 +36,14 @@ class StoreDoctorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:200|min:3',
+            'photo' => 'nullable|max:800|image',
+            'address' => 'nullable|string|max:200',
+            'phone' => 'nullable|max:13|unique:doctors,phone',
+            'desc' => 'nullable|max:500',
+            'email' => 'required|unique:doctors,email|email',
+            'open_at' => 'nullable',
+            'close_at' => 'nullable',
         ];
     }
 }

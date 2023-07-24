@@ -36,7 +36,14 @@ class UpdateDoctorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'nullable|max:200|min:3',
+            'photo' => 'nullable|max:800|image',
+            'address' => 'nullable|string|max:200',
+            'phone' => 'nullable|max:13|unique:doctors,phone,'.$this->doctor->id.',id',
+            'desc' => 'nullable|max:500',
+            'email' => 'required|unique:doctors,email,'.$this->doctor->id.',id|email',
+            'open_at' => 'nullable',
+            'close_at' => 'nullable',
         ];
     }
 }

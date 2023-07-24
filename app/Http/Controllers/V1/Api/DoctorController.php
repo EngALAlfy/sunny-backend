@@ -18,9 +18,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
+use App\Http\Resources\UserResource;
 use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -33,18 +36,24 @@ class DoctorController extends Controller
     {
         abort_unless(auth()->user()->isClinicAdmin(), 403);
         $doctors = Doctor::latest()->get();
-        return $this->success(DoctorResource::collection($doctors) , "");
+        return $this->success(DoctorResource::collection($doctors) , "doctors fetched successfully");
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param StoreDoctorRequest $request
-     * @return Response
+     * @return JsonResponse
      */
     public function store(StoreDoctorRequest $request)
     {
-        //
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $data = $request->validated();
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
+        $doctor = Doctor::create($data);
+        return $this->success(new DoctorResource($doctor));
     }
 
     /**

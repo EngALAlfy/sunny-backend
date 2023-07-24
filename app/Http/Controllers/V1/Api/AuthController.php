@@ -53,9 +53,8 @@ class AuthController extends Controller
                 "user login successfully");
         }
 
-        $this->error('auth.failed', 401);
 
-        return back()->withInput();
+        return $this->error('auth.failed', 401);
     }
 
     /**

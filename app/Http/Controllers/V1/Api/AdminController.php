@@ -16,10 +16,14 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\Constants;
+use App\Http\Requests\StoreAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -31,58 +35,91 @@ class AdminController extends Controller
     public function index()
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
-        $admins = User::whereIn("role" , Constants::ADMIN_ROLES)->get();
+        $admins = User::admins()->get();
         return $this->success(UserResource::collection($admins));
     }
 
+    public function roles()
+    {
+        abort_unless(auth()->user()->isAdmin(), 403);
+        $roles = request()->has("all") ? Constants::ROLES : Constants::ADMIN_ROLES;
+        return $this->success($roles);
+    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreAdminRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreAdminRequest $request)
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
-
+        $data = $request->validated();
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
+        $data["password"] = Hash::make($data["password"]);
+        $data["active"] = true;
+        $admin = User::create($data);
+        return $this->success(new UserResource($admin));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return JsonResponse
      */
-    public function show(User $user)
+    public function show(User $admin)
     {
-        abort_unless(auth()->user()->isSuperAdmin(), 403);
-
+        abort_unless(auth()->user()->isSuperAdmin() || $admin->id == auth()->id(), 403);
+        return $this->success(new UserResource($admin));
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param UpdateAdminRequest $request
+     * @param User $admin
+     * @return JsonResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateAdminRequest $request, User $admin)
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
+        abort_unless(auth()->user()->isSuperAdmin(), 403);
+        $data = $request->validated();
 
+        if(isset($data["password"])){
+            $data["password"] = Hash::make($data["password"]);
+        }
+
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
+
+        $data["active"] = true;
+        $admin->update($data);
+        return $this->success(new UserResource($admin));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $admin
+     * @return JsonResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $admin)
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
 
+        if($admin->id == auth()->id()){
+            return $this->error("you can not delete yourself" , 402);
+        }
+
+        $admin->delete();
+
+        return $this->success(true);
     }
 }

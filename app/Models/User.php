@@ -15,6 +15,7 @@
 namespace App\Models;
 
 use App\Http\Helpers\Constants;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +59,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'active' => 'boolean',
     ];
+
+    public function scopeAdmins(Builder $query): Builder
+    {
+        return $query->whereIn("role" , Constants::ADMIN_ROLES);
+    }
+
+    public function scopeMembers(Builder $query): Builder
+    {
+        return $query->where("role" , Constants::ROLE_MEMBER);
+    }
 
     /**
      *  Check if the user is any ype of admin

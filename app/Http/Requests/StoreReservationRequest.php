@@ -25,7 +25,8 @@ class StoreReservationRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->isClinicAdmin();
+        // any one can create reservation
+        return true;
     }
 
     /**
@@ -36,7 +37,12 @@ class StoreReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "name" => "required|max:200",
+            "phone" => "required|max:13",
+            "email" => "required|email",
+            "address" => "nullable|max:200",
+            "note" => "nullable|max:300",
+            "date" => "nullable",
         ];
     }
 }

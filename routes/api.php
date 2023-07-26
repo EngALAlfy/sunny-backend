@@ -49,7 +49,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);
-        Route::apiResource("reservations", ReservationController::class);
+        Route::apiResource("reservations", ReservationController::class)->except("store");
         Route::apiResource("subscriptions", SubscriptionController::class);
         Route::apiResource("benefits", BenefitController::class);
         Route::apiResource("payment-transactions", PaymentTransactionController::class)->only("index", "store");
@@ -60,7 +60,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
 
     // Section non authed APIs
     Route::as("non-authed.")->group(function () {
-
+        Route::post("/reservations" , [ReservationController::class , "store"])->name("reservations.store");
     });
 
 

@@ -35,8 +35,10 @@ trait HasCreatedByTrait
     {
         static::creating(function ($model) {
             // if auth user - else system
-            if (Auth::check()) {
+            if (auth()->check()) {
                 $model->created_by_user_id = Auth::id();
+            }else if(auth("sanctum")->check()){
+                $model->created_by_user_id = auth("sanctum")->id();
             }
         });
     }

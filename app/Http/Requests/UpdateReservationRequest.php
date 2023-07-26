@@ -14,6 +14,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Helpers\Constants;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReservationRequest extends FormRequest
@@ -36,7 +37,13 @@ class UpdateReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => "nullable|max:200",
+            'phone' => "nullable|max:13",
+            'email' => "nullable|email",
+            'address' => "nullable|max:200",
+            'note' => "nullable|max:300",
+            'date' => "nullable",
+            'status' => "nullable|in:" . Constants::RESERVATION_CANCELLED . "," . Constants::RESERVATION_WAITING . "," . Constants::RESERVATION_CONFIRMED,
         ];
     }
 }

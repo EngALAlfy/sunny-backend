@@ -36,7 +36,8 @@ class StoreBenefitRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "name" => "required|max:200",
+            "unit_price" => "required",
         ];
     }
 }

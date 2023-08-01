@@ -19,20 +19,20 @@ use App\Http\Requests\StoreSubscriptionRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
-class SubscriptionController extends Controller
+class UserSubscriptionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(User $user)
     {
         abort_unless(auth()->user()->isGymAdmin(), 403);
-        $subscriptions = Subscription::latest()->get();
+        $subscriptions = $user->subscriptions()->latest()->get();
         return $this->success(SubscriptionResource::collection($subscriptions));
     }
 
@@ -40,16 +40,14 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param User $user
      * @param StoreSubscriptionRequest $request
      * @return JsonResponse
      */
-    public function store(StoreSubscriptionRequest $request)
+    public function store(User $user , StoreSubscriptionRequest $request)
     {
         abort_unless(auth()->user()->isGymAdmin(), 403);
         $data = $request->validated();
-        if (isset($data["photo"])) {
-            $data["photo"] = upload_image($data["photo"]);
-        }
 
         $subscription = Subscription::create($data);
 
@@ -57,47 +55,16 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Subscription $subscription
-     * @return JsonResponse
-     */
-    public function show(Subscription $subscription)
-    {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
-        return $this->success(new SubscriptionResource($subscription));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateSubscriptionRequest $request
-     * @param Subscription $subscription
-     * @return JsonResponse
-     */
-    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
-    {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
-        $data = $request->validated();
-        if (isset($data["photo"])) {
-            $data["photo"] = upload_image($data["photo"]);
-        }
-
-        $subscription->update($data);
-
-        return $this->success(new SubscriptionResource($subscription));
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
+     * @param User $user
      * @param Subscription $subscription
      * @return JsonResponse
      */
-    public function destroy(Subscription $subscription)
+    public function destroy(User $user , Subscription $subscription)
     {
         abort_unless(auth()->user()->isGymAdmin(), 403);
-        $subscription->delete();
+        $user->subscriptions()->detach($subscription->id);
         return $this->success(true);
     }
 }

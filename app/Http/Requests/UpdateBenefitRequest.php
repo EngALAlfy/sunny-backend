@@ -36,7 +36,8 @@ class UpdateBenefitRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "name" => "nullable|max:200",
+            "unit_price" => "nullable",
         ];
     }
 }

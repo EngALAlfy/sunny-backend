@@ -14,6 +14,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Helpers\Constants;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSubscriptionRequest extends FormRequest
@@ -36,7 +37,10 @@ class UpdateSubscriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'nullable|max:200',
+            'duration' => 'nullable|max:200|in:' . join(",", Constants::DURATIONS),
+            'price' => 'nullable|min:0',
+            'photo' => 'nullable|max:800|image',
         ];
     }
 }

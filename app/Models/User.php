@@ -18,6 +18,8 @@ use App\Http\Helpers\Constants;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -102,5 +104,15 @@ class User extends Authenticatable
     public function paymentsCreatedBy(): BelongsTo
     {
         return $this->belongsTo(PaymentTransaction::class, "id", "created_by_user_id");
+    }
+
+    public function subscriptions(): BelongsToMany
+    {
+        return $this->belongsToMany(Subscription::class);
+    }
+
+    public function benefits(): BelongsToMany
+    {
+        return $this->belongsToMany(Benefit::class);
     }
 }

@@ -42,6 +42,12 @@ class Constants
     public const PAYMENT_ONLINE = "online";
 
     // Section subscriptions duration
+    public const DURATIONS = [
+      self::DURATION_SEMI,
+      self::DURATION_QUARTER,
+      self::DURATION_MONTHLY,
+      self::DURATION_YEARLY,
+    ];
     public const DURATION_MONTHLY = "monthly";
     public const DURATION_QUARTER = "quarter";
     public const DURATION_SEMI = "semi";

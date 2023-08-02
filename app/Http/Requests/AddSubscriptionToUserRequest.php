@@ -26,8 +26,6 @@ class AddSubscriptionToUserRequest extends FormRequest
     {
         return [
             "subscription_id" => "required|exists:subscriptions,id",
-            "price" => "required|numeric",
-            'duration' => 'required|max:200|in:' . join(",", Constants::DURATIONS),
         ];
     }
 }

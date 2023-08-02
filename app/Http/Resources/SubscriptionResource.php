@@ -35,6 +35,7 @@ class SubscriptionResource extends JsonResource
             'duration' => $this->duration,
             'price' => $this->price,
             'photo' => $this->photo,
+            'pivot' => $this->when(!empty($this->pivot), $this->pivot),
             'benefits' => BenefitResource::collection($this->benefits),
         ];
     }

@@ -48,6 +48,13 @@ class Constants
       self::DURATION_MONTHLY,
       self::DURATION_YEARLY,
     ];
+
+    public const DURATIONS_IN_MONTHS = [
+      self::DURATION_SEMI => 3,
+      self::DURATION_QUARTER => 6,
+      self::DURATION_MONTHLY => 1,
+      self::DURATION_YEARLY => 12,
+    ];
     public const DURATION_MONTHLY = "monthly";
     public const DURATION_QUARTER = "quarter";
     public const DURATION_SEMI = "semi";

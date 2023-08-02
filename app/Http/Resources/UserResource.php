@@ -39,6 +39,8 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'active' => $this->active,
             'payments_created_by' => $this->paymentsCreatedBy,
+            'benefits' => BenefitResource::collection($this->benefits),
+            'subscriptions' => SubscriptionResource::collection($this->subscriptions),
             'payments' => $this->payments,
             'created_at' => $this->created_at,
             'last_update' => $this->updated_at,

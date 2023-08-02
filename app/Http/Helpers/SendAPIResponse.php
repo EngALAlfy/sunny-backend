@@ -18,7 +18,7 @@ use Illuminate\Http\JsonResponse;
 
 trait SendAPIResponse
 {
-    function success($data, $message = "all.done_successfully", $code = 200): JsonResponse
+    function success($data, $message = "done successfully", $code = 200): JsonResponse
     {
         return response()->json(["success" => true, "data" => $data, "message" => $message], $code);
     }

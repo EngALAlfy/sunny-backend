@@ -113,6 +113,6 @@ class User extends Authenticatable
 
     public function benefits(): BelongsToMany
     {
-        return $this->belongsToMany(Benefit::class)->withPivot(["limit" , "unit_price"]);
+        return $this->belongsToMany(Benefit::class)->withPivot(["limit" , "unit_price" , "limit_used"]);
     }
 }

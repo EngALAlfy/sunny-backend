@@ -53,6 +53,9 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("/users/{user}/benefits", [UserController::class, "addBenefit"]);
         Route::delete("/users/{user}/benefits/{benefit}", [UserController::class, "removeBenefit"]);
 
+        Route::post("/users/{user}/subscriptions", [UserController::class, "addSubscription"]);
+        Route::delete("/users/{user}/subscriptions/{subscription}", [UserController::class, "removeSubscription"]);
+
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);
@@ -67,7 +70,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
 
     // Section non authed APIs
     Route::as("non-authed.")->group(function () {
-        Route::post("/reservations" , [ReservationController::class , "store"])->name("reservations.store");
+        Route::post("/reservations", [ReservationController::class, "store"])->name("reservations.store");
     });
 
 

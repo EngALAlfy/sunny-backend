@@ -17,6 +17,7 @@ class CreateBenefitUserTable extends Migration
             $table->id();
             $table->double("unit_price")->default(0);
             $table->integer("limit")->default(1);
+            $table->integer("limit_used")->default(0);
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Benefit::class)->constrained()->cascadeOnDelete()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Subscription::class)->nullable()->constrained()->cascadeOnDelete()->cascadeOnDelete();

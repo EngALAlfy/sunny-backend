@@ -15,10 +15,14 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\Constants;
 use App\Http\Requests\AddBenefitToUserRequest;
+use App\Http\Requests\AddSubscriptionToUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Benefit;
+use App\Models\Subscription;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +36,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        abort_unless(auth()->user()->isAdmin() , 403);
+        abort_unless(auth()->user()->isAdmin(), 403);
 
         $users = User::members()->get();
         return $this->success(UserResource::collection($users), "users fetched successfully");
@@ -46,9 +50,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        abort_unless(auth()->user()->isAdmin() , 403);
+        abort_unless(auth()->user()->isAdmin(), 403);
 
-        return $this->success(new UserResource($user) , "user fetched successfully");
+        return $this->success(new UserResource($user), "user fetched successfully");
     }
 
     /**
@@ -58,9 +62,8 @@ class UserController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    public function addBenefit(AddBenefitToUserRequest $request , User $user)
+    public function addBenefit(AddBenefitToUserRequest $request, User $user)
     {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
         $data = $request->validated();
 
         $benefit = Benefit::select(["unit_price"])->find($data["benefit_id"]);
@@ -78,12 +81,68 @@ class UserController extends Controller
      * @param Benefit $benefit
      * @return JsonResponse
      */
-    public function removeBenefit(User $user , Benefit $benefit)
+    public function removeBenefit(User $user, Benefit $benefit)
     {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
-
         $user->benefits()->detach($benefit->id);
 
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Store subscription to user.
+     *
+     * @param AddBenefitToUserRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function addSubscription(AddSubscriptionToUserRequest $request, User $user)
+    {
+        $data = $request->validated();
+
+        if ($user->subscriptions()->where("subscriptions.id", $data["subscription_id"])->exists()) {
+            return $this->error(__("all.subscription_already_added"));
+        }
+        $subscription = Subscription::find($data["subscription_id"]);
+        $data["price"] = $subscription->price;
+        $data["duration"] = $subscription->duration;
+        $data["end_at"] = Carbon::now()->addMonths(Constants::DURATIONS_IN_MONTHS[$subscription->duration]);
+
+        $user->subscriptions()->syncWithoutDetaching([$data["subscription_id"] => $data]);
+
+        // get subscription benefits
+        $benefits = $subscription->benefits;
+        // check if user already have one or more benefit
+        foreach ($benefits as $benefit) {
+            $userBenefit = $user->benefits()->where("benefits.id", $benefit->id)->first();
+
+            if (empty($userBenefit)) {
+                $benefitData["limit"] = $benefit->pivot->limit;
+            } else {
+                $benefitData["limit"] = intval($userBenefit->pivot->limit) + intval($benefit->pivot->limit);
+            }
+
+            $benefitData["unit_price"] = $benefit->pivot->unit_price;
+            $user->benefits()->syncWithoutDetaching([$benefit->id => $benefitData]);
+        }
+
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Remove subscription from user.
+     *
+     * @param User $user
+     * @param Subscription $subscription
+     * @return JsonResponse
+     */
+    public function removeSubscription(User $user, Subscription $subscription)
+    {
+
+        $user->subscriptions()->detach($subscription->id);
+        // get subscription benefits
+        $benefits = $subscription->benefits;
+
+        $user->benefits()->detach($benefits);
         return $this->success(new UserResource($user));
     }
 

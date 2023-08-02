@@ -46,6 +46,13 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::get("/profile", [AuthController::class, "profile"]);
         Route::get("/admins/roles", [AdminController::class, "roles"]);
         Route::get("/doctors/{doctor}/services", [DoctorController::class, "services"]);
+
+        Route::post("/subscriptions/{subscription}/benefits", [SubscriptionController::class, "addBenefit"]);
+        Route::delete("/subscriptions/{subscription}/benefits/{benefit}", [SubscriptionController::class, "removeBenefit"]);
+
+        Route::post("/users/{user}/benefits", [UserController::class, "addBenefit"]);
+        Route::delete("/users/{user}/benefits/{benefit}", [UserController::class, "removeBenefit"]);
+
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);

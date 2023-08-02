@@ -108,11 +108,11 @@ class User extends Authenticatable
 
     public function subscriptions(): BelongsToMany
     {
-        return $this->belongsToMany(Subscription::class);
+        return $this->belongsToMany(Subscription::class)->withPivot(["end_at" , "duration" , "price"]);
     }
 
     public function benefits(): BelongsToMany
     {
-        return $this->belongsToMany(Benefit::class);
+        return $this->belongsToMany(Benefit::class)->withPivot(["limit" , "unit_price"]);
     }
 }

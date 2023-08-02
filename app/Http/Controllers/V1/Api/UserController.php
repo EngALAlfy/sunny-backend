@@ -15,7 +15,9 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddBenefitToUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Benefit;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -47,6 +49,42 @@ class UserController extends Controller
         abort_unless(auth()->user()->isAdmin() , 403);
 
         return $this->success(new UserResource($user) , "user fetched successfully");
+    }
+
+    /**
+     * Store benefit to user.
+     *
+     * @param AddBenefitToUserRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function addBenefit(AddBenefitToUserRequest $request , User $user)
+    {
+        abort_unless(auth()->user()->isGymAdmin(), 403);
+        $data = $request->validated();
+
+        $benefit = Benefit::select(["unit_price"])->find($data["benefit_id"]);
+        $data["unit_price"] = $benefit->unit_price;
+
+        $user->benefits()->syncWithoutDetaching([$data["benefit_id"] => $data]);
+
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Remove benefit from user.
+     *
+     * @param User $user
+     * @param Benefit $benefit
+     * @return JsonResponse
+     */
+    public function removeBenefit(User $user , Benefit $benefit)
+    {
+        abort_unless(auth()->user()->isGymAdmin(), 403);
+
+        $user->benefits()->detach($benefit->id);
+
+        return $this->success(new UserResource($user));
     }
 
     /**

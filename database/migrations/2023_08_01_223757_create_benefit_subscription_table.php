@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBenefitUserTable extends Migration
+class CreateBenefitSubscriptionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateBenefitUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('benefit_user', function (Blueprint $table) {
+        Schema::create('benefit_subscription', function (Blueprint $table) {
             $table->id();
-            $table->double("unit_price")->default(0);
             $table->integer("limit")->default(1);
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete()->cascadeOnDelete();
+            $table->double("unit_price")->default(0);
             $table->foreignIdFor(\App\Models\Benefit::class)->constrained()->cascadeOnDelete()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Subscription::class)->nullable()->constrained()->cascadeOnDelete()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Subscription::class)->constrained()->cascadeOnDelete()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateBenefitUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('benefit_user');
+        Schema::dropIfExists('benefit_subscription');
     }
 }

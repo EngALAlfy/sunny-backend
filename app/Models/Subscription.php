@@ -36,4 +36,9 @@ class Subscription extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function benefits(): BelongsToMany
+    {
+        return $this->belongsToMany(Benefit::class)->withPivot(["unit_price" , "limit"]);
+    }
 }

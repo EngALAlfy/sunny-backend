@@ -30,6 +30,9 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("summary");
+            $table->decimal("price")->default(0);
+            $table->string("photo" , 300)->nullable();
             $table->string("desc" , 600)->nullable();
             $table->foreignIdFor(User::class , "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
             $table->foreignIdFor(Doctor::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();

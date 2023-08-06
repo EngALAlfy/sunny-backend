@@ -27,6 +27,9 @@ class Service extends Model
 
     protected $fillable = [
         'name',
+        'summary',
+        'photo',
+        'price',
         'desc',
         'doctor_id',
     ];
@@ -34,5 +37,9 @@ class Service extends Model
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(ServiceImage::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ServiceComment::class);
     }
 }

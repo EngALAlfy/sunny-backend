@@ -38,6 +38,8 @@ class StoreServiceRequest extends FormRequest
         return [
             'name' => 'required|max:200|min:3',
             'desc' => 'nullable|max:500',
+            'summary' => 'nullable|max:200',
+            'photo' => 'nullable|max:800|image',
             'doctor_id' => 'required|exists:doctors,id',
             'images' => 'nullable|array',
         ];

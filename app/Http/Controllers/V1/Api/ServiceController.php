@@ -15,11 +15,18 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddBenefitToSubscriptionRequest;
+use App\Http\Requests\AddCommentToServiceRequest;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
+use App\Http\Resources\SubscriptionResource;
+use App\Models\Benefit;
 use App\Models\Service;
+use App\Models\ServiceComment;
+use App\Models\Subscription;
 use Illuminate\Http\JsonResponse;
+use PhpParser\Comment;
 
 class ServiceController extends Controller
 {
@@ -46,6 +53,9 @@ class ServiceController extends Controller
     {
         abort_unless(auth()->user()->isClinicAdmin(), 403);
         $data = $request->validated();
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
         $service = Service::create($data);
 
         if (isset($data["images"])) {
@@ -69,6 +79,9 @@ class ServiceController extends Controller
     {
         abort_unless(auth()->user()->isClinicAdmin(), 403);
         $data = $request->validated();
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
         $service->update($data);
 
         if (isset($data["images"])) {
@@ -79,6 +92,23 @@ class ServiceController extends Controller
                 $service->images()->updateOrCreate(["file" => $file]);
             }
         }
+
+        return $this->success(new ServiceResource($service));
+    }
+
+    public function addComment(AddCommentToServiceRequest $request , Service $service)
+    {
+        $data = $request->validated();
+
+        $service->comments()->create($data);
+
+        return $this->success(new ServiceResource($service));
+    }
+    public function removeComment(Service $service , ServiceComment $serviceComment)
+    {
+        abort_unless(auth()->user()->isGymAdmin(), 403);
+
+        $serviceComment->delete();
 
         return $this->success(new ServiceResource($service));
     }

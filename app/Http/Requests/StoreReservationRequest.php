@@ -43,6 +43,8 @@ class StoreReservationRequest extends FormRequest
             "address" => "nullable|max:200",
             "note" => "nullable|max:300",
             "date" => "nullable",
+            'doctor_id' => 'required|exists:doctors,id',
+            'service_id' => 'required|exists:services,id',
         ];
     }
 }

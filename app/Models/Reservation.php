@@ -31,5 +31,17 @@ class Reservation extends Model
         'note',
         'date',
         'status',
+        'service_id',
+        'doctor_id',
     ];
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

@@ -56,6 +56,9 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("/users/{user}/subscriptions", [UserController::class, "addSubscription"]);
         Route::delete("/users/{user}/subscriptions/{subscription}", [UserController::class, "removeSubscription"]);
 
+        Route::post("/services/{service}/comments", [ServiceController::class, "addComment"]);
+        Route::delete("/services/{service}/comments/{serviceComment}", [ServiceController::class, "removeComment"]);
+
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);

@@ -43,6 +43,8 @@ class UpdateReservationRequest extends FormRequest
             'address' => "nullable|max:200",
             'note' => "nullable|max:300",
             'date' => "nullable",
+            'doctor_id' => 'nullable|exists:doctors,id',
+            'service_id' => 'nullable|exists:services,id',
             'status' => "nullable|in:" . Constants::RESERVATION_CANCELLED . "," . Constants::RESERVATION_WAITING . "," . Constants::RESERVATION_CONFIRMED,
         ];
     }

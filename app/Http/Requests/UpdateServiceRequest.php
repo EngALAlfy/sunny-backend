@@ -38,6 +38,9 @@ class UpdateServiceRequest extends FormRequest
         return [
             'name' => 'nullable|max:200|min:3',
             'desc' => 'nullable|max:500',
+            'summary' => 'nullable|max:200',
+            'photo' => 'nullable|max:800|image',
+            'images' => 'nullable|array',
             'doctor_id' => 'nullable|exists:doctors,id',
         ];
     }

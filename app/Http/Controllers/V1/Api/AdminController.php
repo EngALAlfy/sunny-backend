@@ -88,7 +88,6 @@ class AdminController extends Controller
     public function update(UpdateAdminRequest $request, User $admin)
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
-        abort_unless(auth()->user()->isSuperAdmin(), 403);
         $data = $request->validated();
 
         if(isset($data["password"])){

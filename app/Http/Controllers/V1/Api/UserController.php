@@ -18,6 +18,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Constants;
 use App\Http\Requests\AddBenefitToUserRequest;
 use App\Http\Requests\AddSubscriptionToUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Benefit;
 use App\Models\Subscription;
@@ -26,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -149,23 +151,56 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @param User $user
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        abort_unless(auth()->user()->isAdmin() || auth()->id() == $user->id, 403);
+        $data = $request->validated();
+
+        if(isset($data["password"])){
+            $data["password"] = Hash::make($data["password"]);
+        }
+
+        if (isset($data["photo"])) {
+            $data["photo"] = upload_image($data["photo"]);
+        }
+
+        $user->update($data);
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Active user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function active(User $user)
+    {
+        $user->active = true;
+        $user->save();
+        return $this->success(new UserResource($user));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param User $user
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy(User $user)
     {
-        //
+        abort_unless(auth()->user()->isSuperAdmin(), 403);
+
+        if ($user->id == auth()->id()) {
+            return $this->error("you can not delete yourself", 402);
+        }
+
+        $user->delete();
+
+        return $this->success(true);
     }
 }

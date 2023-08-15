@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
             'email' => 'nullable|email|unique:users,email,'.$this->user->id.',id|max:200',
             'password' => 'nullable|max:200|min:4',
             'phone' => 'nullable|unique:users,phone,'.$this->user->id.',id|max:13',
-            'photo' => 'nullable|image|max:800',
+            'photo' => 'nullable|max:800',
         ];
     }
 }

@@ -69,7 +69,8 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::apiResource("payment-transactions", PaymentTransactionController::class)->only("index", "store");
         Route::apiResource("backups", BackupController::class)->except("update");
         Route::apiResource("admins", AdminController::class);
-        Route::apiResource("users", UserController::class)->except(["store"]);
+        Route::apiResource("users", UserController::class)->except(["store" , "update"]);
+        Route::post("users/{user}" , [UserController::class , "update"]);
     });
 
     // Section non authed APIs

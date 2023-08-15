@@ -25,8 +25,6 @@ use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -160,9 +158,10 @@ class UserController extends Controller
         abort_unless(auth()->user()->isAdmin() || auth()->id() == $user->id, 403);
         $data = $request->validated();
 
-        if(isset($data["password"])){
+        if (isset($data["password"])) {
             $data["password"] = Hash::make($data["password"]);
         }
+
 
         if (isset($data["photo"])) {
             $data["photo"] = upload_image($data["photo"]);

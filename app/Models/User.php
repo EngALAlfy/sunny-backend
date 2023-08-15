@@ -15,6 +15,7 @@
 namespace App\Models;
 
 use App\Http\Helpers\Constants;
+use App\Traits\HasImageTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,13 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasImageTrait;
 
+    protected $appends = [
+        'photoName',
+        'photoUrl',
+        'photoHtml',
+    ];
     /**
      * The attributes that are mass assignable.
      *

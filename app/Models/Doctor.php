@@ -15,6 +15,7 @@
 namespace App\Models;
 
 use App\Traits\HasCreatedByTrait;
+use App\Traits\HasImageTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,13 @@ class Doctor extends Model
 {
     use HasFactory;
     use HasCreatedByTrait;
+    use HasImageTrait;
 
+    protected $appends = [
+        'photoName',
+        'photoUrl',
+        'photoHtml',
+    ];
     protected $fillable = [
         'name',
         'photo',

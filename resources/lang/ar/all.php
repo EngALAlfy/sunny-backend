@@ -14,5 +14,7 @@
 
 return [
     "done_successfully" => "تم بنجاح",
+    "email_already_un_verified" => "البريد غير مؤكد بالفعل",
+    "email_already_verified" => "البريد مؤكد بالفعل",
     "" => "",
 ];

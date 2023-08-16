@@ -62,6 +62,7 @@ class AdminController extends Controller
         $data["password"] = Hash::make($data["password"]);
         $data["active"] = true;
         $admin = User::create($data);
+        $admin->markEmailAsVerified();
         return $this->success(new UserResource($admin));
     }
 

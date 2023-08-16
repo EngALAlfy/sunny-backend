@@ -53,7 +53,13 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("/users/{user}/benefits", [UserController::class, "addBenefit"]);
         Route::delete("/users/{user}/benefits/{benefit}", [UserController::class, "removeBenefit"]);
 
-        Route::put("/users/{user}/active", [UserController::class, "active"]);
+        Route::put("/users/{user}/activate", [UserController::class, "activate"]);
+        Route::put("/users/{user}/deactivate", [UserController::class, "deactivate"]);
+
+        Route::put("/users/{user}/email/verify", [UserController::class, "verifyEmail"]);
+        Route::put("/users/{user}/email/unverify", [UserController::class, "unVerifyEmail"]);
+        Route::put("/users/{user}/email/send", [UserController::class, "sendEmailVerify"]);
+
         Route::post("/users/{user}/subscriptions", [UserController::class, "addSubscription"]);
         Route::delete("/users/{user}/subscriptions/{subscription}", [UserController::class, "removeSubscription"]);
 

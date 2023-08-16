@@ -14,5 +14,7 @@
 
 return [
     "done_successfully" => "Done successfully",
+    "email_already_un_verified" => "Email already un verified",
+    "email_already_verified" => "Email already verified",
     "" => "",
 ];

@@ -91,6 +91,8 @@ class AuthController extends Controller
 
             $user = User::create($data);
 
+            $user->sendEmailVerificationNotification();
+
             return $this->success(
                 [
                     "token" => UserService::generateUserToken($user),

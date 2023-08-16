@@ -177,11 +177,75 @@ class UserController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    public function active(User $user)
+    public function activate(User $user)
     {
         $user->active = true;
         $user->save();
         return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Active user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function deactivate(User $user)
+    {
+        $user->active = false;
+        $user->save();
+        return $this->success(new UserResource($user));
+    }
+
+
+    /**
+     * Verify user email.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function verifyEmail(User $user)
+    {
+        if($user->hasVerifiedEmail()){
+            return $this->error(__("all.email_already_verified"));
+        }
+
+        $user->markEmailAsVerified();
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Unverify user email.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function unVerifyEmail(User $user)
+    {
+        if(!$user->hasVerifiedEmail()){
+            return $this->error(__("all.email_already_un_verified"));
+        }
+
+        $user->email_verified_at = null;
+        $user->save();
+        return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Send Email Verify of user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function sendEmailVerify(User $user)
+    {
+        if($user->hasVerifiedEmail()){
+          return $this->error(__("all.email_already_verified"));
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return $this->success(true);
     }
 
     /**

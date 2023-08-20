@@ -206,12 +206,25 @@ class UserController extends Controller
      */
     public function verifyEmail(User $user)
     {
-        if($user->hasVerifiedEmail()){
+        if ($user->hasVerifiedEmail()) {
             return $this->error(__("all.email_already_verified"));
         }
 
         $user->markEmailAsVerified();
         return $this->success(new UserResource($user));
+    }
+
+    /**
+     * Verify email link
+     */
+    public function verifyEmailLink($id)
+    {
+        if (request()->hasValidSignature()) {
+            $user = User::find($id);
+            $user->markEmailAsVerified();
+        }
+
+        return view('user.email-verified');
     }
 
     /**
@@ -222,7 +235,7 @@ class UserController extends Controller
      */
     public function unVerifyEmail(User $user)
     {
-        if(!$user->hasVerifiedEmail()){
+        if (!$user->hasVerifiedEmail()) {
             return $this->error(__("all.email_already_un_verified"));
         }
 
@@ -239,8 +252,8 @@ class UserController extends Controller
      */
     public function sendEmailVerify(User $user)
     {
-        if($user->hasVerifiedEmail()){
-          return $this->error(__("all.email_already_verified"));
+        if ($user->hasVerifiedEmail()) {
+            return $this->error(__("all.email_already_verified"));
         }
 
         $user->sendEmailVerificationNotification();

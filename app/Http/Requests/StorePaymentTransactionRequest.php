@@ -25,7 +25,7 @@ class StorePaymentTransactionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->isAdmin();
     }
 
     /**
@@ -36,7 +36,11 @@ class StorePaymentTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => "nullable|exists:users,id",
+            'payable_id' => "nullable",
+            'value' => "required|numeric|min:0",
+            'type' => "required",
+            'note' => "nullable",
         ];
     }
 }

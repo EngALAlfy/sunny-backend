@@ -16,18 +16,24 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaymentTransactionRequest;
-use Illuminate\Http\Response;
+use App\Http\Resources\PaymentTransactionResource;
+use App\Models\Benefit;
+use App\Models\PaymentTransaction;
+use App\Models\Subscription;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PaymentTransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        abort_unless(auth()->user()->isAdmin(), 403);
+        $transactions = PaymentTransaction::latest()->paginate(20);
+        return PaymentTransactionResource::collection($transactions);
     }
 
 
@@ -35,11 +41,28 @@ class PaymentTransactionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StorePaymentTransactionRequest $request
-     * @return Response
+     * @return PaymentTransactionResource
      */
     public function store(StorePaymentTransactionRequest $request)
     {
-        //
+        abort_unless(auth()->user()->isAdmin(), 403);
+
+        $data = $request->validated();
+        $data["created_by_user_id"] = auth()->id();
+
+        if (isset($data["type"])) {
+            $type = $data["type"];
+            if (str_contains($type, "benefit")) {
+                $data["payable_type"] = Benefit::class;
+            }
+
+            if (str_contains($type, "subscription")) {
+                $data["payable_type"] = Subscription::class;
+            }
+        }
+
+        $transaction = PaymentTransaction::create($data);
+        return new PaymentTransactionResource($transaction);
     }
 
 }

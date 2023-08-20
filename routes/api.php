@@ -70,13 +70,14 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);
         Route::apiResource("reservations", ReservationController::class)->except("store");
-        Route::apiResource("subscriptions", SubscriptionController::class);
+        Route::apiResource("subscriptions", SubscriptionController::class)->except("update");
         Route::apiResource("benefits", BenefitController::class);
         Route::apiResource("payment-transactions", PaymentTransactionController::class)->only("index", "store");
         Route::apiResource("backups", BackupController::class)->except("update");
         Route::apiResource("admins", AdminController::class);
         Route::apiResource("users", UserController::class)->except(["store" , "update"]);
         Route::post("users/{user}" , [UserController::class , "update"]);
+        Route::post("subscriptions/{subscription}" , [SubscriptionController::class , "update"]);
     });
 
     // Section non authed APIs

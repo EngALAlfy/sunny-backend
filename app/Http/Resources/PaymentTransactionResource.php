@@ -29,6 +29,17 @@ class PaymentTransactionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "value" => $this->value,
+            "type" => $this->type,
+            "member_id" => $this->user_id,
+            "member" => new UserResource($this->user),
+            "admin" => new UserResource($this->createdByUser),
+            "payable_id" => $this->payable_id,
+            "payable" => optional($this->payable)->toArray(),
+            "note" => $this->note,
+            "created_at" => $this->created_at,
+        ];
     }
 }

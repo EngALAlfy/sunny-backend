@@ -35,8 +35,8 @@ class CreateReservationsTable extends Migration
             $table->string("note" , 300)->nullable();
             $table->string("status")->comment("allowed [waiting , confirmed , cancelled]");
             $table->foreignIdFor(\App\Models\User::class , "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
-            $table->foreignIdFor(\App\Models\Doctor::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(\App\Models\Service::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(\App\Models\Doctor::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(\App\Models\Service::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

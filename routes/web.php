@@ -22,6 +22,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Http\Controllers\V1\Api\UserController;
+
 Route::get('/cache-clear', function () {
     $output = "";
     Artisan::call('cache:clear');
@@ -39,3 +42,5 @@ Route::get('/cache-clear', function () {
 
     return $output;
 })->name("clear-cache");
+
+Route::get("/users/email/verify/{id}", [UserController::class, "verifyEmailLink"])->name("verification.verify");

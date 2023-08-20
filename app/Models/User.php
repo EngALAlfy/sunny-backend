@@ -89,6 +89,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->isSuperAdmin() || $this->isGymAdmin() || $this->isClinicAdmin();
     }
 
+    public function isMember(): bool
+    {
+        return $this->role == Constants::ROLE_MEMBER || $this->isAdmin();
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->role == Constants::ROLE_SUPER_ADMIN;

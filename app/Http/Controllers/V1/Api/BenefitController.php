@@ -30,7 +30,7 @@ class BenefitController extends Controller
      */
     public function index()
     {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
+        abort_unless(auth()->user()->isMember(), 403);
         $benefits = Benefit::latest()->get();
         return $this->success(BenefitResource::collection($benefits));
     }

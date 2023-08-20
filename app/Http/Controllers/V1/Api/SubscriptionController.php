@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        abort_unless(auth()->user()->isGymAdmin(), 403);
+        abort_unless(auth()->user()->isMember(), 403);
         $subscriptions = Subscription::latest()->get();
         return $this->success(SubscriptionResource::collection($subscriptions));
     }

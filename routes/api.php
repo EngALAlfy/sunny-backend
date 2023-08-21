@@ -66,6 +66,10 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("/services/{service}/comments", [ServiceController::class, "addComment"]);
         Route::delete("/services/{service}/comments/{serviceComment}", [ServiceController::class, "removeComment"]);
 
+        Route::get("users/{role}" , [UserController::class , "byRole"]);
+        Route::post("users/{user}" , [UserController::class , "update"]);
+        Route::post("subscriptions/{subscription}" , [SubscriptionController::class , "update"]);
+
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
         Route::apiResource("services", ServiceController::class);
@@ -76,9 +80,6 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::apiResource("backups", BackupController::class)->except("update");
         Route::apiResource("admins", AdminController::class);
         Route::apiResource("users", UserController::class)->except(["store" , "update"]);
-        Route::post("users/{user}" , [UserController::class , "update"]);
-        Route::post("subscriptions/{subscription}" , [SubscriptionController::class , "update"]);
-        Route::get("users/{role}" , [UserController::class , "byRole"]);
     });
 
     // Section non authed APIs

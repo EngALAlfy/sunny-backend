@@ -66,9 +66,10 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("/services/{service}/comments", [ServiceController::class, "addComment"]);
         Route::delete("/services/{service}/comments/{serviceComment}", [ServiceController::class, "removeComment"]);
 
-        Route::get("users/{role}" , [UserController::class , "byRole"]);
-        Route::post("users/{user}" , [UserController::class , "update"]);
-        Route::post("subscriptions/{subscription}" , [SubscriptionController::class , "update"]);
+        Route::get("users/roles/{role}", [UserController::class, "byRole"]);
+        Route::post("users/{user}", [UserController::class, "update"]);
+        Route::post("admins/{admin}", [AdminController::class, "update"]);
+        Route::post("subscriptions/{subscription}", [SubscriptionController::class, "update"]);
 
         // Section resources
         Route::apiResource("doctors", DoctorController::class);
@@ -78,8 +79,8 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::apiResource("benefits", BenefitController::class);
         Route::apiResource("payment-transactions", PaymentTransactionController::class)->only("index", "store");
         Route::apiResource("backups", BackupController::class)->except("update");
-        Route::apiResource("admins", AdminController::class);
-        Route::apiResource("users", UserController::class)->except(["store" , "update"]);
+        Route::apiResource("admins", AdminController::class)->except("update");
+        Route::apiResource("users", UserController::class)->except(["store", "update"]);
     });
 
     // Section non authed APIs

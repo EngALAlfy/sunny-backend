@@ -16,7 +16,7 @@ namespace App\Traits;
 
 trait HasImageTrait {
     public function getPhotoUrlAttribute(){
-        return $this->photo == null ? asset("assets/img/placeholder.jpg") : asset("/storage/photos") . "/" . $this->photo ;
+        return $this->photo == null ? asset("assets/img/placeholder.jpg") : asset("/storage/images") . "/" . $this->photo ;
     }
 
     public function getPhotoNameAttribute(){

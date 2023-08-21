@@ -78,6 +78,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::apiResource("users", UserController::class)->except(["store" , "update"]);
         Route::post("users/{user}" , [UserController::class , "update"]);
         Route::post("subscriptions/{subscription}" , [SubscriptionController::class , "update"]);
+        Route::get("users/{role}" , [UserController::class , "byRole"]);
     });
 
     // Section non authed APIs

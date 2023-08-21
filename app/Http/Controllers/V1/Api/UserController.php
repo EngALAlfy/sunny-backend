@@ -43,6 +43,24 @@ class UserController extends Controller
     }
 
     /**
+     * Display a listing of the resource by role name.
+     *
+     * @param string $role
+     * @return JsonResponse
+     */
+    public function byRole(string $role)
+    {
+        abort_unless(auth()->user()->isAdmin(), 403);
+
+        if(!in_array($role , Constants::ROLES)){
+            return  $this->error("role not correct");
+        }
+
+        $users = User::where("role" , $role)->get();
+        return $this->success(UserResource::collection($users), "users fetched successfully");
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param User $user

@@ -15,18 +15,14 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AddBenefitToSubscriptionRequest;
 use App\Http\Requests\AddCommentToServiceRequest;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
-use App\Http\Resources\SubscriptionResource;
-use App\Models\Benefit;
 use App\Models\Service;
 use App\Models\ServiceComment;
-use App\Models\Subscription;
 use Illuminate\Http\JsonResponse;
-use PhpParser\Comment;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
@@ -96,7 +92,42 @@ class ServiceController extends Controller
         return $this->success(new ServiceResource($service));
     }
 
-    public function addComment(AddCommentToServiceRequest $request , Service $service)
+
+    /**
+     * Remove image from service
+     * @param Service $service
+     * @param string $image
+     * @return JsonResponse
+     */
+    public function removeImage(Service $service, string $image)
+    {
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+        $service->images()->detach(["file" => $image]);
+        return $this->success(new ServiceResource($service));
+    }
+
+    /**
+     * Add image to service
+     * @param Request $request
+     * @param Service $service
+     * @return JsonResponse
+     */
+    public function addImage(Request $request, Service $service)
+    {
+        abort_unless(auth()->user()->isClinicAdmin(), 403);
+
+        $request->validate([
+            "image" => "required|image|max:1000",
+        ]);
+
+        $image = $request->image;
+
+        $file = upload_image($image);
+        $service->images()->updateOrCreate(["file" => $file]);
+        return $this->success(new ServiceResource($service));
+    }
+
+    public function addComment(AddCommentToServiceRequest $request, Service $service)
     {
         $data = $request->validated();
 
@@ -104,7 +135,8 @@ class ServiceController extends Controller
 
         return $this->success(new ServiceResource($service));
     }
-    public function removeComment(Service $service , ServiceComment $serviceComment)
+
+    public function removeComment(Service $service, ServiceComment $serviceComment)
     {
         abort_unless(auth()->user()->isGymAdmin(), 403);
 

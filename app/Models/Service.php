@@ -18,6 +18,7 @@ use App\Traits\HasCreatedByTrait;
 use App\Traits\HasImageTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -45,8 +46,14 @@ class Service extends Model
     {
         return $this->belongsToMany(ServiceImage::class);
     }
+
     public function comments(): HasMany
     {
         return $this->hasMany(ServiceComment::class);
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
     }
 }

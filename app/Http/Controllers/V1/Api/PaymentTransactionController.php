@@ -36,6 +36,12 @@ class PaymentTransactionController extends Controller
         return PaymentTransactionResource::collection($transactions);
     }
 
+    public function show(PaymentTransaction $paymentTransaction)
+    {
+        abort_unless(auth()->user()->isAdmin(), 403);
+        return new PaymentTransactionResource($paymentTransaction);
+    }
+
 
     /**
      * Store a newly created resource in storage.

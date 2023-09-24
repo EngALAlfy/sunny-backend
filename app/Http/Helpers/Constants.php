@@ -50,8 +50,8 @@ class Constants
     ];
 
     public const DURATIONS_IN_MONTHS = [
-      self::DURATION_SEMI => 3,
-      self::DURATION_QUARTER => 6,
+      self::DURATION_SEMI => 6,
+      self::DURATION_QUARTER => 3,
       self::DURATION_MONTHLY => 1,
       self::DURATION_YEARLY => 12,
     ];

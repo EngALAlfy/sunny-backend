@@ -26,6 +26,9 @@ class PaymentTransaction extends Model
     use HasCreatedByTrait;
 
     protected $fillable = [
+        'client_name',
+        'client_email',
+        'client_phone',
         'user_id',
         'payable_id',
         'payable_type',

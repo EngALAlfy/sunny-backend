@@ -18,6 +18,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Constants;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Throwable;
 
 class AuthController extends Controller
@@ -111,5 +114,25 @@ class AuthController extends Controller
     public function profile()
     {
         return $this->success(new UserResource(auth()->user()), "user fetched successfully");
+    }
+
+    /**
+     * Reset password on mail
+     * @return JsonResponse
+     */
+    public function resetPassword(string $email)
+    {
+        $user = User::where("email" , $email)->first();
+        if(empty($user)){
+            return $this->error("no user found" , 404);
+        }
+
+        $password = Str::random(8);
+        $user->password = Hash::make($password);
+        $user->save();
+
+        Mail::to($user->email)->send(new ResetPasswordMail($password , $user));
+
+        return $this->success(true, "password reset successfully");
     }
 }

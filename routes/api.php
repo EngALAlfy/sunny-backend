@@ -39,6 +39,7 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
     // Section Auth APIs
     Route::post('/auth/register', [AuthController::class, "register"]);
     Route::post('/auth/login', [AuthController::class, "login"]);
+    Route::get('/auth/reset-password/{email}', [AuthController::class, "resetPassword"]);
 
     // Section Authed APIs
     Route::as("authed.")->middleware('auth:sanctum')->group(function () {
@@ -74,6 +75,9 @@ Route::prefix("v1")->as("v1.")->middleware(['apiLocalization'])->group(function 
         Route::post("users/{user}", [UserController::class, "update"]);
         Route::post("admins/{admin}", [AdminController::class, "update"]);
         Route::post("subscriptions/{subscription}", [SubscriptionController::class, "update"]);
+
+        Route::get("payment-transactions/sum/user/{user}", [PaymentTransactionController::class, "getUserSum"]);
+        Route::get("payment-transactions/sum/admin/{admin}", [PaymentTransactionController::class, "getAdminSum"]);
 
         // Section resources
         Route::apiResource("doctors", DoctorController::class);

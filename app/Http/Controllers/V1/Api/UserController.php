@@ -38,7 +38,7 @@ class UserController extends Controller
     {
         abort_unless(auth()->user()->isAdmin(), 403);
 
-        $users = User::members()->get();
+        $users = User::members()->paginate(20);
         return $this->success(UserResource::collection($users), "users fetched successfully");
     }
 

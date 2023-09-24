@@ -38,9 +38,12 @@ class StorePaymentTransactionRequest extends FormRequest
         return [
             'user_id' => "nullable|exists:users,id",
             'payable_id' => "nullable",
-            'value' => "required|numeric|min:0",
+            'value' => "required|numeric",
             'type' => "required",
             'note' => "nullable",
+            'client_name' => "nullable|max:200",
+            'client_email' => "nullable|max:100|email",
+            'client_phone' => "nullable|max:13",
         ];
     }
 }

@@ -29,12 +29,15 @@ class CreatePaymentTransactionsTable extends Migration
         Schema::create('payment_transactions', function (Blueprint $table) {
             $table->id();
             $table->double("value")->default(0);
-            $table->string("type");
-            $table->foreignIdFor(User::class);
+            $table->string("type")->nullable();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger("payable_id")->nullable();
             $table->string("payable_type")->nullable();
-            $table->string("note" , 300)->nullable();
-            $table->foreignIdFor(\App\Models\User::class , "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
+            $table->string("client_name")->nullable();
+            $table->string("client_email")->nullable();
+            $table->string("client_phone")->nullable();
+            $table->string("note", 300)->nullable();
+            $table->foreignIdFor(\App\Models\User::class, "created_by_user_id")->nullable()->constrained("users")->nullOnDelete();
             $table->timestamps();
         });
     }

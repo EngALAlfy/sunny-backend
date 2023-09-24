@@ -39,6 +39,9 @@ class PaymentTransactionResource extends JsonResource
             "payable_id" => $this->payable_id,
             "payable" => optional($this->payable)->toArray(),
             "note" => $this->note,
+            "client_name" => $this->client_name,
+            "client_email" => $this->client_email,
+            "client_phone" => $this->client_phone,
             "created_at" => $this->created_at,
         ];
     }

@@ -32,8 +32,8 @@ class ReservationController extends Controller
     public function index()
     {
         abort_unless(auth()->user()->isClinicAdmin(), 403);
-        $reservations = Reservation::latest()->get();
-        return $this->success(ReservationResource::collection($reservations));
+        $reservations = Reservation::latest()->paginate(20);
+        return ReservationResource::collection($reservations);
     }
 
 

@@ -32,14 +32,14 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         abort_unless(auth()->user()->isAdmin(), 403);
 
         $users = User::members()->paginate(20);
-        return $this->success(UserResource::collection($users), "users fetched successfully");
+        return UserResource::collection($users);
     }
 
     /**

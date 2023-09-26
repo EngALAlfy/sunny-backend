@@ -36,7 +36,7 @@ class AdminController extends Controller
     {
         abort_unless(auth()->user()->isSuperAdmin(), 403);
         $admins = User::admins()->paginate(20);
-        return $this->success(UserResource::collection($admins));
+        return UserResource::collection($admins);
     }
 
     public function roles()

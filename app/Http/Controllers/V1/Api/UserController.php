@@ -117,15 +117,14 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if ($user->subscriptions()->where("subscriptions.id", $data["subscription_id"])->exists()) {
-            return $this->error(__("all.subscription_already_added"));
-        }
         $subscription = Subscription::find($data["subscription_id"]);
         $data["price"] = $subscription->price;
         $data["duration"] = $subscription->duration;
-        $data["end_at"] = Carbon::now()->addMonths(Constants::DURATIONS_IN_MONTHS[$subscription->duration]);
+        if(empty($data["end_at"])) {
+            $data["end_at"] = Carbon::now()->addMonths(Constants::DURATIONS_IN_MONTHS[$subscription->duration]);
+        }
 
-        $user->subscriptions()->syncWithoutDetaching([$data["subscription_id"] => $data]);
+        $user->subscriptions()->sync([$data["subscription_id"] => $data]);
 
         // get subscription benefits
         $benefits = $subscription->benefits;

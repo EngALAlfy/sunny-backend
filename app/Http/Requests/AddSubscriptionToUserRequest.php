@@ -26,6 +26,7 @@ class AddSubscriptionToUserRequest extends FormRequest
     {
         return [
             "subscription_id" => "required|exists:subscriptions,id",
+            "end_at" => "nullable|date",
         ];
     }
 }
